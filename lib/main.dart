@@ -196,7 +196,7 @@ class _TestScreenState extends State<TestScreen>{
                 child: Center(
                     child: Text(
                         questionData[0],
-                      style: TextStyle(fontSize: 50),
+                      style: TextStyle(fontSize: 40),
                     )
                 )
             ),
@@ -227,11 +227,17 @@ class _TestScreenState extends State<TestScreen>{
     else{
       return Container(
         alignment: Alignment.center,
-        child: FloatingActionButton(
+        child: FloatingActionButton.extended(
+          label: Column(
+            children: [
+              Text('Ты выполнил 10 заданий по теме $title.'),
+              Text('Нажми, чтобы вернуться'),
+            ],
+          ),
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Ты выполнил 10 заданий по теме $title. Нажми, чтобы вернуться'),
+          //child: Text('Ты выполнил 10 заданий по теме $title. Нажми, чтобы вернуться'),
         ),
       );
     }
