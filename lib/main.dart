@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(const MyApp());
@@ -177,13 +178,15 @@ class _TestScreenState extends State<TestScreen>{
   List<dynamic> questionData = [];
 
   _TestScreenState(this.title);
-
-
+  final answerController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     questionData = createQuestion(title);
-    if(answersCount < 10) {
+    print(questionData.toString());
+    print(answerController.text.runtimeType);
+    answerController.text = '';
+    if((answersCount < 10) & (questionData[1].toString() != answerController.text)) {
       return Container(
         alignment: Alignment.center,
         child: Column(
@@ -199,12 +202,24 @@ class _TestScreenState extends State<TestScreen>{
             ),
             Expanded(
               flex: 1,
-              child: FloatingActionButton(
-                  onPressed:(){ setState(() {
-                    answersCount = answersCount + 1;
-                  });},
+              child: TextFormField(
+                autofocus: false,
+                  controller: answerController,
+                  onFieldSubmitted: (String value) {
+                    if(value == questionData[1].toString()){
+                      setState(() {
+                        answersCount += 1;
+                      });
+                    }
+                  },
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      labelText: "WTF",
+                      hintText: "whatever you want",
+                      icon: Icon(Icons.phone_iphone)
+                  )
+              )
               ),
-            ),
           ],
         ),
       );
@@ -232,7 +247,39 @@ List<dynamic> createQuestion(title) {
     int first = Random().nextInt(201) - 100;
     int second = Random().nextInt(201) - 100;
     result.add('$first $operator $second = ?');
+    operator == '-'? result.add(first - second) : result.add(first + second);
     return result;
+  }
+  else if(title == 'Трехзначные числа'){
+    String operator = operations[Random().nextInt(2)];
+    int first = Random().nextInt(2001) - 1000;
+    int second = Random().nextInt(2001) - 1000;
+    result.add('$first $operator $second = ?');
+    operator == '-'? result.add(first - second) : result.add(first + second);
+    return result;
+  }
+  else if(title == 'Умножение и деление'){
+    String operator = operations[Random().nextInt(2)+2];
+    if(operator == '/') {
+      int second = Random().nextInt(21);
+      int first = second * (Random().nextInt(20) + 1);
+      result.add('$first $operator $second = ?');
+      result.add(first ~/ second);
+    }
+    else{
+      int first = Random().nextInt(20);
+      int second = Random().nextInt(21);
+      result.add('$first $operator $second = ?');
+      result.add(first * second);
+    }
+    return result;
+  }
+  else if(title == 'Степени двойки'){
+    int power = Random().nextInt(11);
+    result.add('2 в степени $power = ?');
+    result.add(pow(2, power));
+    return result;
+
   }
 
   return [];
