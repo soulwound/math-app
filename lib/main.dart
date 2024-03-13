@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() {
+  //player.play(alarmAudioPath);
   runApp(const MyApp());
 }
 
@@ -167,7 +169,6 @@ class TestScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TestScreenState(title);
 
-
 }
 
 
@@ -205,18 +206,25 @@ class _TestScreenState extends State<TestScreen>{
               child: TextFormField(
                 autofocus: false,
                   controller: answerController,
-                  onFieldSubmitted: (String value) {
+                  onFieldSubmitted: (String value) async {
+                    AudioPlayer player = new AudioPlayer();
                     if(value == questionData[1].toString()){
+                      await player.setSource(AssetSource('sounds/ben-yes.wav'));
+                      await player.resume();
                       setState(() {
                         answersCount += 1;
                       });
                     }
+                    else{
+                      await player.setSource(AssetSource(['sounds/ho-ho-ho-ben.wav', 'sounds/ben-no.wav'][Random().nextInt(2)]));
+                      await player.resume();
+                    }
                   },
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      labelText: "WTF",
-                      hintText: "whatever you want",
-                      icon: Icon(Icons.phone_iphone)
+                      labelText: "Ответ",
+                      hintText: "сюда",
+                      icon: Icon(Icons.numbers)
                   )
               )
               ),

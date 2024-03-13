@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  audioplayers: ^5.2.1
   flutter:
     sdk: flutter
 
@@ -65,6 +66,9 @@ flutter:
     - assets/icons/advancedquestions.png
     - assets/icons/multiplying.png
     - assets/icons/poweroftwo.png
+    - assets/sounds/ho-ho-ho.mp3
+    - assets/sounds/ho-ho-ho-ben.wav
+    - assets/sounds/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
