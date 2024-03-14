@@ -1,11 +1,23 @@
+import 'dart:convert';
+
+import 'api_keys.dart';
+
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'api_requests.dart';
 
-void main() {
-  //player.play(alarmAudioPath);
+var quoteURL = 'https://api.api-ninjas.com/v1/quotes?category=knowledge';
+
+late List<String> quoteData;
+
+void main() async{
+  QuoteAPIRequest quoteRequest =  QuoteAPIRequest(quoteURL, quoteAPIKey);
+
+  quoteData = await quoteRequest.getQuote();
+  print(quoteData);
   runApp(const MyApp());
 }
 
@@ -47,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: const Column(
         children: [
           TaskPage(),
-          Statistics()
+          Quote()
         ],
       ),
     );
@@ -121,14 +133,33 @@ class TypeTile extends StatelessWidget {
   }
 }
 
-class Statistics extends StatelessWidget {
-  const Statistics({super.key});
+class Quote extends StatelessWidget {
+  const Quote({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-      child: Text('Luv u!'),
+      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+      child: Column(
+        children: [
+          Text(
+            quoteData[0],
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20
+            ),
+
+          ),
+          Text(
+            quoteData[1],
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 18,
+              fontStyle: FontStyle.italic,
+            ),
+          )
+        ],
+      )
     );
   }
   
